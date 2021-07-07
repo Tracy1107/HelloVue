@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <p>km: <input type="text" v-model="km"></p>
+        <p>m: <input type="text" v-model="m"></p>
+        <p>cm: <input type="text" v-model="cm"></p>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    km: 0,
+                    m: 0,
+                    cm: 0
+                }
+            },
+            watch: {
+                km(val) {
+                    this.m = val * 1000
+                    this.cm = val * 100000
+                },
+                m(val) {
+                    this.km = val / 1000
+                    this.cm = val * 100
+                },
+                cm(val) {
+                    this.km = val / 100000
+                    this.m = val / 100
+                }
+            }
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>

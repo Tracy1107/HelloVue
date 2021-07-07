@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <p>Sum: {{sum}}</p>
+        <button-counter 
+            v-for="item in titles" 
+            :key="item.index" 
+            :title="item.title"
+            @add="sum += 10">
+        </button-counter>
+    </div>  
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    titles: [
+                        {index: 1, title: 'Button1'},
+                        {index: 2, title: 'Button2'},
+                        {index: 3, title: 'Button3'}
+                    ],
+                    sum: 0
+                }
+            }
+        })
+        
+        app.component('button-counter', {
+            props: ['title'],
+            data() {
+                return {
+                    counter: 0
+                }
+            },
+            template: `<div>{{title}}點擊 <button @click="btnClick">{{ counter }}</button> 次</div>`,
+            methods: {
+                btnClick() {
+                    this.counter += 1
+                    this.$emit('add')
+                }
+            }
+        })
+
+        app.mount('#app')
+    </script>
+</body>
+</html>

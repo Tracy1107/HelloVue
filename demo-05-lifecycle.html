@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ title }}</h1> 
+        <vm-test v-if="active"></vm-test>
+        <button @click="title='New Title'">Update Title</button>
+        <button @click="active = !active">Unmount</button>
+    </div>
+
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    title: 'Hllo Vue!',
+                    active: true
+                }
+            },
+            beforeCreate() {
+                console.log("beforeCreate()")
+            },
+            created() {
+                console.log("created()")
+            },
+            beforeMount() {
+                console.log("beforeMount()");
+            },
+            mounted() {
+                setTimeout(() => {console.log("mounted()")}, 3000);
+            },
+            beforeUpdate() {
+                console.log("beforeUpdate()")
+            },
+            updated() {
+                console.log("updated()")
+            }
+        })
+        
+        
+        app.component('vm-test', {
+            template: '<div>test</div>',
+            beforeCreate() {
+                console.log("vm-test beforeCreate()")
+            },
+            created() {
+                console.log("vm-test created()")
+            },
+            beforeMount() {
+                console.log("vm-test beforeMount()");
+            },
+            mounted() {
+                setTimeout(() => {console.log("vm-test mounted()")}, 3000);
+            },
+            beforeUnmount() {
+                console.log("vm-test beforeUnmount()")
+            },
+            unmounted() {
+                console.log("vm-test unmounted()")
+            },
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>

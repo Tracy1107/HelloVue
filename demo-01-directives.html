@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .title {
+            font-weight: bold; 
+            color:teal; 
+            background: rgb(205, 245, 245); 
+            display: inline-block;
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid green;
+            background: greenyellow;
+            margin: 50px;
+            transition: transform 0.5s;
+        }
+
+        .rotate {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 註解 windows: ctrl+/; mac: command+k+c, command+k+u -->
+        <!-- 雙向綁定 -->
+        <p class="title">雙向綁定</p>
+        <br>
+        {{ text }}
+        <hr>
+
+        <!-- v-text -->
+        <p class="title">v-text</p>
+        <p v-text="text"></p>
+        <hr>
+
+        <!-- v-html -->
+        <p class="title">v-html</p>
+        <div v-html="htext"></div>
+        <hr>
+
+        <!-- v-show -->
+        <p class="title">v-show</p>
+        <div v-show="show" v-html="htext"></div>
+        <hr>
+
+        <!-- v-if -->
+        <p class="title">v-if</p>
+        <div v-if="type==='A'" style="width: 50px; height: 50px; background: yellow;">A</div>
+        <div v-else-if="type==='B'" style="width: 50px; height: 50px; background: greenyellow;">B</div>
+        <div v-else-if="type==='C'" style="width: 50px; height: 50px; background: peru;">C</div>
+        <div v-else style="width: 50px; height: 50px; background:thistle;">Others</div>
+        <hr>
+
+        <!-- v-bind -->
+        <p class="title">v-bind</p>
+        <div>
+            <img src="http://www.cartoonbucket.com/wp-content/uploads/2015/05/Pikachu-With-Raichu-Picture.jpg" alt="" style="width: 30%; height: 30%;">
+            <img v-bind:src="imgSrc" alt="" style="width: 30%; height: 30%;">
+            <!-- <img :src="imgSrc" alt="" style="width: 30%; height: 30%;"> -->
+        </div>
+        <hr>
+
+        <!-- v-for -->
+        <p class="title">v-for</p>
+        <pre>{{ list }}</pre>
+        <ul>
+            <!-- <li>{{ list[0].name }} - {{ list[0].age }}歲</li>
+            <li>{{ list[1].name }} - {{ list[1].age }}歲</li>
+            <li>{{ list[2].name }} - {{ list[2].age }}歲</li> -->
+
+            <li v-for="(item, index) in list">
+                {{ item.name }} - {{ item.age }}歲
+            </li>
+        </ul>
+        <hr>
+
+        <!-- v-on -->
+        <p class="title">v-on</p>
+        <p>按鈕被按了 {{ count }} 次</p>
+        <button @click="add()">Add 1</button>
+        <hr>
+
+        <!-- v-class -->
+        <p class="title">v-class</p>
+        <div class="box" :class="{ rotate: transform }"></div>
+        <button @click="transform = !transform">旋轉</button>
+        <hr>
+
+        <!-- v-model >> input -->
+        <p class="title">v-model >> input</p>
+        <br>
+        <input type="text" v-model="message">
+        <p>message: {{ message }}</p>
+        <hr>
+
+        <!-- v-model >> textarea 多行文字 -->
+        <p class="title">v-model >> textarea 多行文字</p>
+        <br>
+        <textarea cols="30" rows="10" v-model="textarea"></textarea>
+        <p style="white-space: pre-line;">多行文字: {{ textarea }}</p>
+        <hr>
+
+        <!-- v-model >> checkbox 單一選項-->
+        <p class="title">v-model >> checkbox 單一選項</p>
+        <br>
+        <input type="checkbox" id="checkbox1" v-model="checkbox1">
+        <label for="checkbox1">要不要看電影-{{ checkbox1 }}</label>
+        <hr>
+
+        <!-- v-model >> checkbox 多選項-->
+        <p class="title">v-model >> checkbox 多選項</p>
+        <!-- <div>
+            <input type="checkbox" id="movie" value="movie" v-model="checklist">
+            <label for="movie">看電影</label>
+        </div>
+        <div>
+            <input type="checkbox" id="pizza" value="pizza" v-model="checklist">
+            <label for="pizza">吃披薩</label>
+        </div>
+        <div>
+            <input type="checkbox" id="bubbletea" value="bubbletea" v-model="checklist">
+            <label for="bubbletea">喝珍奶</label>
+        </div> -->
+
+        <div v-for="(item, index) in checkoptions">
+            <input type="checkbox" :id="'ckbx'+item.id" :value="item.value" v-model="checklist">
+            <label :for="'ckbx'+item.id">{{ item.label }}</label>
+        </div>
+        <p>我要：{{ checklist }}</p>
+        <hr>
+
+        <!-- v-model >> radiobox-->
+        <p class="title">v-model >> radiobox</p>
+        <div>
+            <input type="radio" id="radio1" value="1" v-model="picked">
+            <label for="radio1">One</label>
+        </div>
+        <div>
+            <input type="radio" id="radio2" value="2" v-model="picked">
+            <label for="radio2">Two</label>
+        </div>
+        <p>選擇的是：{{ picked }}</p>
+        <hr>
+
+        <!-- v-model >> select 下拉選單-->
+        <p class="title">v-model >> select 下拉選單</p>
+        <div>
+            <!-- <select v-model="selected">
+                <option value="One">A</option>
+                <option value="Two">B</option>
+                <option value="Three">C</option>
+                <option value="Four">D</option>
+            </select> -->
+
+            <select v-model="selected">
+                <option v-for="item in options" :value="item.value">{{ item.label }}</option>
+            </select>
+            <p>選擇的是：{{ selected }}</p>
+        </div>
+
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    text: 'Hello Vue, I love Vue!',
+                    htext: '<p>I <span style="color:red;">&hearts;</span> Vue!</p>',
+                    show: true,
+                    type: 'S',
+                    imgSrc: 'http://www.cartoonbucket.com/wp-content/uploads/2015/05/Pikachu-Eating-Apple.png',
+                    list: [
+                        { name: '阿姨', age: 28 },
+                        { name: '媽媽', age: 32 },
+                        { name: '小恩', age: 7 }
+                    ],
+                    count: 0,
+                    transform: false,
+                    message: '',
+                    textarea: '',
+                    checkbox1: false,
+                    checklist: [],
+                    checkoptions: [
+                        { id: 1, label: '看電影', value: 'movie' },
+                        { id: 2, label: '吃披薩', value: 'pizza' },
+                        { id: 3, label: '喝珍奶', value: 'bubbletea' }
+                    ],
+                    picked: 1,
+                    selected: '',
+                    options: [
+                        { label: 'A', value: 'One' },
+                        { label: 'B', value: 'Two' },
+                        { label: 'C', value: 'Three' },
+                        { label: 'D', value: 'Four' }
+                    ]
+                }
+            },
+            methods: {
+                add(value=1) {
+                    this.count += value ? value : 1
+                }
+            }
+        })
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
