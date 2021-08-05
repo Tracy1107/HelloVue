@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ title }}</h1> 
+        <child></child>
+        <button @click="title='New Title'">Update Title</button>
+        <button @click="unmounted()">unmounted</button>
+    </div>
+
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    title: 'Hello Vue!'
+                }
+            },
+            beforeCreate() {
+                console.log("main ==> beforeCreate()")
+            },
+            created() {
+                console.log("main ==> created()")
+            },
+            beforeMount() {
+                console.log("main ==> beforeMount()")
+            },
+            mounted() {
+                setTimeout(() => {console.log("main ==> mounted()")}, 3000);
+            },
+            beforeUpdate() {
+                console.log("main ==> beforeUpdate()")
+            },
+            updated() {
+                console.log("main ==> updated()")
+            },
+            beforeUnmount: function() {
+                console.log("main ==> beforeUnmount()")
+            },
+            unmounted: function() {
+                console.log("main ==> unmounted()")
+            },
+            methods: {
+                unmounted() {
+                    app.unmount()
+                }
+            }
+        })
+        
+        
+        app.component('child', {
+            template: '<div>Here is child</div>',
+            beforeCreate() {
+                console.log("child ==> beforeCreate()")
+            },
+            created() {
+                console.log("child ==> created()")
+            },
+            beforeMount() {
+                console.log("child ==> beforeMount()")
+            },
+            mounted() {
+                setTimeout(() => {console.log("child ==> mounted()")}, 3000);
+            },
+            beforeUnmount() {
+                console.log("child ==> beforeUnmount()")
+            },
+            unmounted() {
+                console.log("child ==> unmounted()")
+            },
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>

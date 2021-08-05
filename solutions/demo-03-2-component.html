@@ -9,45 +9,41 @@
 </head>
 <body>
     <div id="app">
-        <p>Sum: {{sum}}</p>
-        <button-counter 
-            v-for="item in titles" 
-            :key="item.index" 
-            :title="item.title"
-            @add="sum += 10">
-        </button-counter>
-    </div>  
+        <!-- <button-counter name="Button1"></button-counter>
+        <button-counter name="Button2"></button-counter>
+        <button-counter name="Button3"></button-counter>  -->
+        <button-counter v-for="item in buttons" :name="item.name"></button-counter>
+    </div>
 
     <script>
         const app = Vue.createApp({
             data() {
                 return {
-                    titles: [
-                        {index: 1, title: 'Button1'},
-                        {index: 2, title: 'Button2'},
-                        {index: 3, title: 'Button3'}
-                    ],
-                    sum: 0
+                    buttons: [
+                        { index: 0, name: 'Button1' },
+                        { index: 1, name: 'Button2' },
+                        { index: 2, name: 'Button3' }
+                    ]
                 }
             }
         })
-        
         app.component('button-counter', {
-            props: ['title'],
+            props: [ 'name' ],
+            template: 
+            `<div>
+                {{ name }}點擊 <button @click="addOne()">{{ counter }}</button> 次
+            </div>`,
             data() {
                 return {
                     counter: 0
                 }
             },
-            template: `<div>{{title}}點擊 <button @click="btnClick">{{ counter }}</button> 次</div>`,
             methods: {
-                btnClick() {
+                addOne() {
                     this.counter += 1
-                    this.$emit('add')
                 }
             }
         })
-
         app.mount('#app')
     </script>
 </body>
